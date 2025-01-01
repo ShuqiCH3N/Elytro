@@ -16,6 +16,12 @@ Add component from `shadcn/ui`
 pnpm dlx shadcn@latest add xxx --no-overwrite
 ```
 
+production build
+
+```shell
+pnpm build
+```
+
 ## TODO
 
 - Missing eth rpc methods

@@ -1,12 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
+import { cn } from '@/utils/shadcn/utils';
 import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormMessage,
@@ -19,11 +18,13 @@ const passwordForm = z
     password: z
       .string()
       .min(6, {
-        message:
-          'The password should be more than 6 characters and include more than 1 capitalized letter.',
+        message: 'The password should be more than 6 characters.',
       })
       .refine((value) => /[A-Z]/.test(value), {
         message: 'The password should include more than 1 capitalized letter.',
+      })
+      .refine((value) => /[!@#$%^&*(),.?":{}|<>]/.test(value), {
+        message: 'The password should include at least 1 special character.',
       }),
     confirm: z.string(),
   })
@@ -48,6 +49,25 @@ export function PasswordSetter({ onSubmit, loading }: PasswordSetterProps) {
     onSubmit(data.password);
   };
 
+  const currentPassword = form.watch('password') || '';
+
+  // password validation
+  const pwdValidationStates = {
+    length: currentPassword.length >= 6,
+    uppercase: /[A-Z]/.test(currentPassword),
+    special: /[!@#$%^&*(),.?":{}|<>]/.test(currentPassword),
+  };
+
+<<<<<<< HEAD
+  // 确认密码校验 -- 更改
+  const confirmValidationStates = {
+    match: currentPassword === form.getValues('confirm'),
+  };
+
+
+
+=======
+>>>>>>> 4460cd7c18278b73123f3a312d0c0eed0f16b8bc
   return (
     <Form {...form}>
       <form
@@ -69,14 +89,45 @@ export function PasswordSetter({ onSubmit, loading }: PasswordSetterProps) {
                   />
                 </FormControl>
 
-                {form.formState.errors.password ? (
-                  <FormMessage />
-                ) : (
-                  <FormDescription>
-                    The password should be more than 6 characters and include
-                    more than 1 capitalized letter.
-                  </FormDescription>
-                )}
+                {
+                  // form.formState.errors.password ? (
+                  //   <FormMessage />
+                  // ) : (
+                  //   <FormDescription>
+                  //     The password should be more than 6 characters and include
+                  //     more than 1 capitalized letter.
+                  //   </FormDescription>
+                  // )
+                }
+
+                <div className="space-y-2 mt-2">
+                  <div
+                    className={cn(
+                      'text-sm transition-colors ',
+                      pwdValidationStates.length ? 'text-green' : 'text-gray '
+                    )}
+                  >
+                    • More than 6 characters
+                  </div>
+                  <div
+                    className={cn(
+                      'text-sm transition-colors',
+                      pwdValidationStates.uppercase
+                        ? 'text-green'
+                        : 'text-gray '
+                    )}
+                  >
+                    • Include at least 1 uppercase letter
+                  </div>
+                  <div
+                    className={cn(
+                      'text-sm transition-colors',
+                      pwdValidationStates.special ? 'text-green' : 'text-gray '
+                    )}
+                  >
+                    • Include a special character
+                  </div>
+                </div>
               </FormItem>
             )}
           />
