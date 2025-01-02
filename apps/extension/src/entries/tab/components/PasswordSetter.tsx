@@ -58,16 +58,6 @@ export function PasswordSetter({ onSubmit, loading }: PasswordSetterProps) {
     special: /[!@#$%^&*(),.?":{}|<>]/.test(currentPassword),
   };
 
-<<<<<<< HEAD
-  // 确认密码校验 -- 更改
-  const confirmValidationStates = {
-    match: currentPassword === form.getValues('confirm'),
-  };
-
-
-
-=======
->>>>>>> 4460cd7c18278b73123f3a312d0c0eed0f16b8bc
   return (
     <Form {...form}>
       <form
